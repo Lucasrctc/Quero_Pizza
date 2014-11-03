@@ -50,7 +50,8 @@ game_loop:-
 					human_select_move(Move, MovesList),!,
 					set_piece(Board, Move, Color, FinalBoard),
 					loop_retract(Board, Color),
-					loop_assign(FinalBoard, RivalColor),!
+					loop_assign(FinalBoard, RivalColor),
+					game_loop,!
 				;
 				Color = white ->
 					machine_select_move(Board, Depth, white, FinalBoard),!,
