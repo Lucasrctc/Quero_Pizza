@@ -1,4 +1,0 @@
-Quero_Pizza
-===========
-
-Prolog
