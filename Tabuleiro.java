@@ -53,14 +53,7 @@ public class Tabuleiro
 		//Cria os quadrados do Tabuleiro
 		CriaQuadrados();
                 
-                //1º Quadrado onde não há nada escrito
-		GridPanel.add(new JLabel(""));
-		
-		//Preenche a primeira linha do GridPanel
-                PreenchePrimeiraLinha();
-		
-		//Preenche o restante das linhas
-                PreencheLinhas();
+                ConstroiTabuleiro();
 		
 	}
 		
@@ -89,6 +82,7 @@ public class Tabuleiro
             Insets BotaoMargem=new Insets(0,0,0,0);
             JButton b=new JButton();
             b.setMargin(BotaoMargem);
+            b.setBackground(new Color(230, 230, 250));
             
             return b;
             
@@ -149,8 +143,7 @@ public class Tabuleiro
             ImageIcon icon = new ImageIcon(
                                 new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB));
             b.setIcon(icon);
-            b.setIcon(new javax.swing.ImageIcon(getClass().getResource("/otello/BlackCircle.png")));
-            b.setBackground(new Color(204, 205, 153));
+            b.setBackground(Color.BLACK);
             return b;
         }
         
@@ -159,9 +152,7 @@ public class Tabuleiro
             ImageIcon icon = new ImageIcon(
                                 new BufferedImage(30, 30, BufferedImage.TYPE_INT_ARGB));
             b.setIcon(icon);
-            b.setIcon(new javax.swing.ImageIcon(getClass().getResource("/otello/WhiteCircle.png")));
-            b.setBackground(new Color(204, 205, 153));
-
+            b.setBackground(Color.WHITE);
             return b;
         }
         
@@ -179,6 +170,33 @@ public class Tabuleiro
         public void AddToolMessage()
         {
             tools.add(message);
+        }
+        
+        public void AddPecaPreta(int i, int j)
+        {
+            pecas[i][j]=PecaPreta(CriaButton());
+        }
+        
+         public void AddPecaBranca(int i, int j)
+        {
+            pecas[i][j]=PecaBranca(CriaButton());
+            	
+        }
+         
+        public void ConstroiTabuleiro()
+        {
+            GridPanel.removeAll();
+            
+            //1º Quadrado onde não há nada escrito
+		GridPanel.add(new JLabel(""));
+                
+            //Preenche a primeira linha do GridPanel
+                PreenchePrimeiraLinha();
+                
+            //Preenche o restante das linhas
+                PreencheLinhas();
+                
+                
         }
         
 }
