@@ -9,11 +9,11 @@ public class OthelloMain
 	public static void main(String []args)
 	{
 	
-            /*Prolog p=new Prolog();
+            Prolog p=new Prolog();
             p.IniciarOtello();
                 
          
-            TelaDificuldade td=new TelaDificuldade();
+            /*TelaDificuldade td=new TelaDificuldade();
             td.ConfigFrame();
             
             do
@@ -26,16 +26,24 @@ public class OthelloMain
             System.out.println(p.RetiraSimbolos(k));*/
    
             
-            String inicio="emptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyblackwhiteemptyemptyemptyemptyemptyemptywhiteblackemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyempty";
+            String inicio="emptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyempty";
             JFrame frame= new JFrame("Teste");
             Tabuleiro tb = new Tabuleiro(frame);
 		tb.InicializaGui();
-                Prolog.ConstroiTabuleiro(tb, inicio);
+                p.ConstroiTabuleiro(tb, inicio);
                 
                 
 		
                 
 		tb.MostrarTab();
+                
+                while(true)
+                {
+                    System.out.println(tb.getX()+ " " + tb.getY());
+                }
+                
+                
+                
 		
 	}
 	

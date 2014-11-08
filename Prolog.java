@@ -83,7 +83,7 @@ public class Prolog
         return k;
     }
     
-    static public void ConstroiTabuleiro(Tabuleiro tb, String k)
+    public void ConstroiTabuleiro(Tabuleiro tb, String k)
     {
         
         for(int i=0;i<320;i+=5)

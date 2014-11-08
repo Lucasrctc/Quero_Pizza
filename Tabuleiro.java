@@ -1,6 +1,8 @@
 package otello;
 
 import java.awt.*;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -17,6 +19,20 @@ public class Tabuleiro
 	private static final String COLS="ABCDEFGH";
 	private JFrame janela;
         private JToolBar tools;
+        private int posicao[]=new int [2];
+        
+        
+        
+        
+        public int getX()
+        {
+            return posicao[0];
+        }
+        
+        public int getY()
+        {
+            return posicao[1];
+        }
         
 	Tabuleiro(JFrame td)
 	{
@@ -86,6 +102,8 @@ public class Tabuleiro
             b.setMargin(BotaoMargem);
             b.setBackground(new Color(230, 230, 250));
             
+            
+            
             return b;
             
         }
@@ -119,15 +137,29 @@ public class Tabuleiro
         
         public void CriaQuadrados()
         {
+            
             for(int ii=0; ii<pecas.length;ii++)
 		{
 			for(int jj=0;jj<pecas[ii].length;jj++)
 			{   
-                                   pecas[ii][jj]=CriaButton();
+                                   pecas[ii][jj]=CriaButton();     
+                                   AddComportamentoPosicao(pecas[ii][jj],ii,jj);
+                                   
                                    
                                    			
 			}
 		}
+        }
+        
+        public void AddComportamentoPosicao(JButton button, int ii, int jj)
+        {
+            
+		button.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent arg0) {
+                            posicao[0]=jj;
+                            posicao[1]=ii;                            
+                        }
+			});
         }
         
         public void PreencheColunaLetras(int ii)
@@ -198,7 +230,7 @@ public class Tabuleiro
             //Preenche o restante das linhas
                 PreencheLinhas();
                 
-                
+            GridPanel.validate();
         }
         
 }
