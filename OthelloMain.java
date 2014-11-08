@@ -8,24 +8,34 @@ public class OthelloMain
 {
 	public static void main(String []args)
 	{
-		/*Tabuleiro tb= new Tabuleiro();
-		tb.InicializaGui();
-		tb.ConfigFrame();
-		tb.MostrarTab();*/
+	
+            /*Prolog p=new Prolog();
+            p.IniciarOtello();
                 
-                Prolog p=new Prolog();
-                p.IniciarOtello();
-               
-                
-            
+         
             TelaDificuldade td=new TelaDificuldade();
             td.ConfigFrame();
             
             do
-            {System.out.println("Luan");}
+            {System.out.print("");}
             while(td.getDificuldade()==0);
+         
+            JFrame j=p.InserirDificuldade(td);
             
-            p.InserirDificuldade(td);        
+            String k=p.LoopBoard();
+            System.out.println(p.RetiraSimbolos(k));*/
+   
+            
+            String inicio="emptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyblackwhiteemptyemptyemptyemptyemptyemptywhiteblackemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyemptyempty";
+            JFrame frame= new JFrame("Teste");
+            Tabuleiro tb = new Tabuleiro(frame);
+		tb.InicializaGui();
+                Prolog.ConstroiTabuleiro(tb, inicio);
+                
+                
+		
+                
+		tb.MostrarTab();
 		
 	}
 	

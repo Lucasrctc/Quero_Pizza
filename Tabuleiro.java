@@ -18,18 +18,15 @@ public class Tabuleiro
 	private JFrame janela;
         private JToolBar tools;
         
-        
-	
-	
-	Tabuleiro()
+	Tabuleiro(JFrame td)
 	{
 		InicializaGui();
-		ConfigFrame();
+		ConfigFrame(td);
 	}
 	
-	public void ConfigFrame()
+	public void ConfigFrame(JFrame td)
 	{
-		janela=new JFrame("Othello");
+		janela=td;
 		janela.add(gui);	
 	}
 	
@@ -69,11 +66,16 @@ public class Tabuleiro
 	
 	public void MostrarTab()
 	{
+                
+                janela.setPreferredSize(new Dimension(525,429));
 		janela.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
-		janela.setLocationByPlatform(true);
+		//janela.setLocationByPlatform(true);
 		janela.pack();
 		janela.setMinimumSize(janela.getSize());
 		janela.setVisible(true);
+                
+                
+              
 	}
 	
 	
