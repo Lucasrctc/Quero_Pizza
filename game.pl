@@ -1,22 +1,57 @@
-play(Depth):-
-    asserta(loop_depth(Depth)),
-    play(8,8).
+play(Dificuldade, PlayerColor):-
+	(
+		PlayerColor = black ->
+			asserta(p_color(black))
+		;
+		PlayerColor = white ->
+			asserta(p_color(white))
+	),
+	asserta(rownum(8)),
+	asserta(colnum(8)),
+	init_board(0,[],Board),
+	asserta(loop_board(Board)),
+	print_board(Board),
+	asserta(loop_color(black)),
+	asserta(dif(Dificuldade)).
 
-play(Rown,Coln):-
-		    asserta(rownum(Rown)),
-		    asserta(colnum(Coln)),
-		    init_board(0,[],Board),
-		    asserta(loop_board(Board)),
-		    asserta(loop_color(black)).
+play(Dificuldade1, Dificuldade2):-
+	asserta(rownum(8)),
+	asserta(colnum(8)),
+	init_board(0,[],Board),
+	asserta(loop_board(Board)),
+	print_board(Board),
+	asserta(loop_color(black)),
+	asserta(p_color(none)),
+	asserta(difP(Dificuldade1)),
+	asserta(difB(Dificuldade2)).
 
-play(_,_,_):-
+play(_,_):-
+	p,
 	destroy.
+
+play(_,_):-
+	destroy2.
 
 destroy:-
 	rownum(Rown),
 	colnum(Coln),
+	player_color(Pcolor),
+	dif(Dificuldade),
+	retract(Pcolor),
 	retract(rownum(Rown)),
-	retract(colnum(Coln)).
+	retract(colnum(Coln)),
+	retract(dif(Dificuldade)).
+
+destroy2:-
+	rownum(Rown),
+	colnum(Coln),
+	difB(DificuldadeB),
+	difP(DificuldadeP),
+	retract(p_color(none)),
+	retract(rownum(Rown)),
+	retract(colnum(Coln)),
+	retract(difB(DificuldadeB)),
+	retract(difP(DificuldadeP)).
 
 loop_assign(Board, Color):-
 	asserta(loop_board(Board)),
@@ -26,39 +61,39 @@ loop_retract(Board, Color):-
 	retract(loop_board(Board)),
 	retract(loop_color(Color)).
 
-loop_start(Board, Color, Depth):-
+loop_start(Board, Color):-
 	loop_board(Board),
-	loop_color(Color),
-	loop_depth(Depth).
+	loop_color(Color).
 
-game_loop(X, Y):-
-    loop_start(Board, Color, Depth),
-    is_board_full(Board,IsBoardFull),
+game_loop(X, Y, Finished):-
+    loop_start(Board, Color),
+    is_board_full(Board,Finished),
     (
-        IsBoardFull = yes ->
-            show_statistics(Board)
-        ;
-		find_moves(Board, Color, MovesList),
-		member(_, MovesList),
+        Finished = no ->
 		rival_color(Color,RivalColor),
-	    print_board(Board),
 	    print_player(Color),
+		find_moves(Board, Color, MovesList),
+		member(_, MovesList),!,
 		(
 			
-				Color = black ->
+				p_color(Color) ->
 					human_select_move(X, Y, Move, MovesList),!,
 					set_piece(Board, Move, Color, FinalBoard),
 					loop_retract(Board, Color),
-					loop_assign(FinalBoard, RivalColor),!
+					loop_assign(FinalBoard, RivalColor),
+					print_board(FinalBoard),!
 				;
 					/*machine_select_move(Board, Depth, white, FinalBoard),!,*/
 					machine_select_move(Board, Color, FinalBoard),
 					loop_retract(Board, Color),
-					loop_assign(FinalBoard, RivalColor),!
+					loop_assign(FinalBoard, RivalColor),
+	    			print_board(FinalBoard),!
 		)
+		;
+		show_statistics(Board)
     ).
 
-game_loop(_,_):-
+game_loop(_,_, Finished):-
 	loop_board(Board),
 	loop_color(Color),
 	find_moves(Board, Color, MovesList),!,
@@ -67,11 +102,13 @@ game_loop(_,_):-
 	(
         /* if rival also have no move, show statistics*/
         (find_moves(Board, RivalColor, RivalMovesList), member(_,RivalMovesList))->	
+        	Finished = no,
 		    writeln('There\'s no valid move.'),
 			retract(loop_color(Color)),
 			asserta(loop_color(RivalColor)),!
 		;
             writeln('There\'s no valid move for both players.'),
+            Finished = yes,
             show_statistics(Board)
 	).
 

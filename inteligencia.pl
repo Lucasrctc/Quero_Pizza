@@ -13,7 +13,7 @@ escolhe([], Color, _, _, Imin, Imax, _, Index):-
 
 
 escolhe([X|RemBoards], Color, MinValue, MaxValue, Imin, Imax, CurIndex, Index):-
-    eval(Color, X, V),
+    eval(X, V),
     (
         V> MaxValue ->
             NMaxValue is V, 
