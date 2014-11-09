@@ -13,36 +13,47 @@ import javax.swing.JFrame;
 
 public class Prolog
 {
+    private Query q1;
     private Query q2;
     private Query q3;
     private Query q4;
-    private Query q5;
-    private Query q6;
-    private Query q7;
     
     public void IniciarOtello()
     {
         String PATH = "C:/Users/Luan Cardoso/Documents/NetBeansProjects/Otello/src/otello/";                   
-        q5 = new Query("consult", new Term[] {new Atom(PATH+"eval")});
-        System.out.println( "consult1 " + (q5.query() ? "succeeded" : "failed"));
-        q2 = new Query("consult", new Term[] {new Atom(PATH+"game")});
-        System.out.println( "consult2 " + (q2.query() ? "succeeded" : "failed"));
-        q3 = new Query("consult", new Term[] {new Atom(PATH+"board")});
-        System.out.println( "consult3 " + (q3.query() ? "succeeded" : "failed"));
-        q4 = new Query("consult", new Term[] {new Atom(PATH+"alpha_beta_pruning")});
-        System.out.println( "consult4 " + (q4.query() ? "succeeded" : "failed"));
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"Valor.pl")});
+        System.out.println( "Valor.pl carregado " + (q1.query() ? "succeeded" : "failed"));
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"utilities.pl")});
+        System.out.println( "Utilities.pl carregado " + (q1.query() ? "succeeded" : "failed"));
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"board.pl")});
+        System.out.println( "Board.pl carregado " + (q1.query() ? "succeeded" : "failed"));
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"game.pl")});
+        System.out.println( "Game.pl carregado " + (q1.query() ? "succeeded" : "failed"));
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"Inteligencia.pl")});
+        System.out.println( "Inteligencia.pl carregado " + (q1.query() ? "succeeded" : "failed"));
           
+    }
+    
+    public void InserirDificuldade()
+    {
+        q2= new Query("play",
+                new Term[]{
+                    new Atom ("2")});
+        
+        
+        System.out.println( "Dificuldade Configurada " + (q2.query() ? "succeeded" : "failed"));
+        
     }
     
     public JFrame InserirDificuldade(TelaDificuldade td)
     {
         String k = Integer.toString(td.getDificuldade());
-        q6= new Query("play",
+        q3= new Query("play",
                 new Term[]{
                     new Atom (k)});
         
         System.out.println(k);
-        System.out.println( "consult6 " + (q6.query() ? "succeeded" : "failed"));
+        System.out.println( "Dificuldade Configurada " + (q3.query() ? "succeeded" : "failed"));
         
         td.getContentPane().remove(td.getPanel1());
         td.getContentPane().validate();
@@ -55,19 +66,33 @@ public class Prolog
     public String LoopBoard()
     {
         Variable Board = new Variable("Board");
-        q7 = new Query(new Compound("loop_board", new Term[] { Board })); 
+        q4 = new Query(new Compound("loop_board", new Term[] { Board })); 
         Hashtable h = new Hashtable(); 
         String k=""; 
         
-        while(q7.hasMoreSolutions())
+        while(q4.hasMoreSolutions())
          {
-                    h = q7.nextSolution(); 
+                    h = q4.nextSolution(); 
                     k = h.get("Board").toString(); 
                  
           }
         
         return k;
     }
+    
+    public void GameLoop(int i, int j)
+    {
+        jpl.Integer a= new jpl.Integer(i);
+        jpl.Integer b= new jpl.Integer(j);
+        
+        Query q = new Query( "game_loop", new Term[]{a,b});
+        
+        //new Atom(b.toString())
+        
+        System.out.println( "consult Game Loop " + (q.query() ? "succeeded" : "failed"));
+        
+    }
+        
     
     public String RetiraSimbolos(String k)
     {
@@ -527,6 +552,7 @@ public class Prolog
             }
             
             tb.ConstroiTabuleiro();
+            
         }
     }
    

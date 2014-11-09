@@ -16,6 +16,8 @@ public class Tabuleiro
 	private JButton[][] pecas=new JButton[8][8];
 	private JPanel GridPanel;
 	private final JLabel message=new JLabel("Othello está pronto para jogar!");
+        private JLabel BrancaScore;
+        private JLabel PretaScore;
 	private static final String COLS="ABCDEFGH";
 	private JFrame janela;
         private JToolBar tools;
@@ -58,6 +60,8 @@ public class Tabuleiro
                 AddButtonNew();
 		AddToolSeparator();
 		AddToolMessage();
+                AddToolPretaScore();
+                AddToolBrancaScore();
 		
 		GridPanel=new JPanel(new GridLayout(0,9));
 		GridPanel.setBorder(new LineBorder(Color.BLACK));
@@ -157,7 +161,10 @@ public class Tabuleiro
 		button.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent arg0) {
                             posicao[0]=jj;
-                            posicao[1]=ii;                            
+                            posicao[1]=ii;
+                            Jogo.TrocaConfirmaJogador();
+ 
+                            
                         }
 			});
         }
@@ -196,6 +203,18 @@ public class Tabuleiro
             tools.add(new JButton("Novo Jogo"));
         }
         
+        public void AddToolBrancaScore()
+        {
+            
+            tools.add(BrancaScore);
+        }
+        
+        public void AddToolPretaScore()
+        {
+            
+            tools.add(PretaScore);
+        }
+        
         public void AddToolSeparator()
         {
             tools.addSeparator();
@@ -209,11 +228,13 @@ public class Tabuleiro
         public void AddPecaPreta(int i, int j)
         {
             pecas[i][j]=PecaPreta(CriaButton());
+            AddComportamentoPosicao(pecas[i][j],i,j);
         }
         
          public void AddPecaBranca(int i, int j)
         {
             pecas[i][j]=PecaBranca(CriaButton());
+            AddComportamentoPosicao(pecas[i][j],i,j);
             	
         }
          
@@ -230,6 +251,7 @@ public class Tabuleiro
             //Preenche o restante das linhas
                 PreencheLinhas();
                 
+            GridPanel.repaint();
             GridPanel.validate();
         }
         
