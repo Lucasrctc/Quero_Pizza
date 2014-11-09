@@ -35,10 +35,10 @@ game_loop(X, Y, Finished):-
     is_board_full(Board,Finished),
     (
         Finished = no ->
-		find_moves(Board, Color, MovesList),
-		member(_, MovesList),
 		rival_color(Color,RivalColor),
 	    print_player(Color),
+		find_moves(Board, Color, MovesList),
+		member(_, MovesList),!,
 		(
 			
 				Color = black ->
