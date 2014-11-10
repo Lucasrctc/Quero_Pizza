@@ -1,40 +1,7 @@
-eval(Board, Value):-
-	p_color(black);p_color(white),
+eval(Color, Board, Value):-
     count_pieces(black, Board, BlackPieces, WhitePieces),
     PieceDif is BlackPieces - WhitePieces,
-    dif(Dificuldade),
-    (
-    	Dificuldade = 1 ->
-	    	Value is PieceDif
-    	;
-    	Dificuldade = 2 ->
-    		getEdges(Edges),
-    		positionCount(black,Board,Edges,BlackEdges,WhiteEdges),
-    		EdgeDif is 10 * (BlackEdges -  WhiteEdges),
-    		Value is PieceDif + EdgeDif
-    	;
-    	getEdges(Edges),
-    	positionCount(black,Board,Edges,BlackEdges,WhiteEdges),
-    	EdgeDif is 10 * (BlackEdges -  WhiteEdges),
-    	getCorners(Corners),
-    	positionCount(black,Board,Corners,BlackCorners,WhiteCorners),
-    	CornerDif is 80 * (BlackCorners -  WhiteCorners),
-    	Dificuldade = 3 ->
-    		Bonus is EdgeDif + CornerDif,
-    		Value is PieceDif + Bonus
-    ).
-
-
-eval(Board, Value):-
-    count_pieces(black, Board, BlackPieces, WhitePieces),
-    PieceDif is BlackPieces - WhitePieces,
-    loop_color(Color),
-    (
-    	Color = black ->
-    		difP(Dificuldade)
-    	;
-	    	difB(Dificuldade)
-    ),
+    dif(Color, Dificuldade),
     (
     	Dificuldade = 1 ->
 	    	Value is PieceDif
