@@ -12,7 +12,8 @@ play(Dificuldade, PlayerColor):-
 	asserta(loop_board(Board)),
 	print_board(Board),
 	asserta(loop_color(black)),!,
-	asserta(dif(Dificuldade)).
+	rival_color(PlayerColor, MachineColor),
+	asserta(dif(MachineColor, Dificuldade)).
 
 play(DificuldadeB, DificuldadeW):-
 	asserta(rownum(8)),
@@ -22,8 +23,8 @@ play(DificuldadeB, DificuldadeW):-
 	print_board(Board),
 	asserta(loop_color(black)),
 	asserta(p_color(none)),
-	asserta(difB(DificuldadeB)),!,
-	asserta(difW(DificuldadeW)).
+	asserta(dif(black, DificuldadeB)),!,
+	asserta(dif(white, DificuldadeW)).
 
 play(_,_):-
 	destroy.
@@ -34,22 +35,24 @@ play(_,_):-
 destroy:-
 	rownum(Rown),
 	colnum(Coln),
-	dif(Dificuldade),
+	player_color(PColor),
+	rival_color(PColor, MColor),
+	dif(MColor, Dificuldade),
+	retract(p_color(PColor)),
 	retract(rownum(Rown)),
 	retract(colnum(Coln)),
-	retract(dif(Dificuldade)).
+	retract(dif(MColor, Dificuldade)).
 
 destroy2:-
 	rownum(Rown),
 	colnum(Coln),
-	difB(DificuldadeB),
-	difW(DificuldadeW),
+	dif(black, DificuldadeB),
+	dif(white, DificuldadeW),
 	retract(p_color(none)),
 	retract(rownum(Rown)),
 	retract(colnum(Coln)),
-	retract(difB(DificuldadeB)),
-	retract(difW(DificuldadeW)).
-
+	retract(dif(black, DificuldadeB)),
+	retract(dif(white, DificuldadeW)).
 
 loop_assign(Board, Color):-
 	asserta(loop_board(Board)),
@@ -85,18 +88,17 @@ game_loop(X, Y, Finished):-
 					machine_select_move(Board, Color, FinalBoard),
 					loop_retract(Board, Color),
 					loop_assign(FinalBoard, RivalColor),
-	    			print_board(FinalBoard),!
+	    				print_board(FinalBoard),!
 		)
 		;
 		show_statistics(Board)
     ).
 
 game_loop(_,_, Finished):-
-	loop_board(Board),
-	loop_color(Color),
+	loop_start(Board, Color),
 	find_moves(Board, Color, MovesList),!,
 	not(member(_,MovesList)),!,
-    rival_color(Color, RivalColor),
+	rival_color(Color, RivalColor),
 	(
         /* if rival also have no move, show statistics*/
         (find_moves(Board, RivalColor, RivalMovesList), member(_,RivalMovesList))->	
@@ -125,7 +127,7 @@ show_statistics(Board):-
         ;
         write('Tie game\n')
 
-    ),
+    ),!,
     nl.
 
 print_player(white):-
