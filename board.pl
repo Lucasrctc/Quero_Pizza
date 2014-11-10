@@ -183,7 +183,7 @@ find_boards(Caller, Board, Color, BoardsList, CurrentBoardsList, [Move|RestMoves
 order_boards(Caller, Color, CurrentBoardsList, FinalBoard, NBoardsList):-
 	/*rival_color(Color, RivalColor),*/
 	/*valid_positions(FinalBoard, RivalColor, Number),*/
-	eval(FinalBoard, Number),
+	eval(Caller, FinalBoard, Number),
 	order_boards_aux(Color, [FinalBoard, Number], CurrentBoardsList, [], NBoardsList).
 
 order_boards_aux(_, Board, [], CurrentList, FinalList):-
