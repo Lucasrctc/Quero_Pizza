@@ -11,10 +11,10 @@ play(Dificuldade, PlayerColor):-
 	init_board(0,[],Board),
 	asserta(loop_board(Board)),
 	print_board(Board),
-	asserta(loop_color(black)),
+	asserta(loop_color(black)),!,
 	asserta(dif(Dificuldade)).
 
-play(Dificuldade1, Dificuldade2):-
+play(DificuldadeB, DificuldadeW):-
 	asserta(rownum(8)),
 	asserta(colnum(8)),
 	init_board(0,[],Board),
@@ -22,11 +22,10 @@ play(Dificuldade1, Dificuldade2):-
 	print_board(Board),
 	asserta(loop_color(black)),
 	asserta(p_color(none)),
-	asserta(difP(Dificuldade1)),
-	asserta(difB(Dificuldade2)).
+	asserta(difB(DificuldadeB)),!,
+	asserta(difW(DificuldadeW)).
 
 play(_,_):-
-	p,
 	destroy.
 
 play(_,_):-
@@ -35,9 +34,7 @@ play(_,_):-
 destroy:-
 	rownum(Rown),
 	colnum(Coln),
-	player_color(Pcolor),
 	dif(Dificuldade),
-	retract(Pcolor),
 	retract(rownum(Rown)),
 	retract(colnum(Coln)),
 	retract(dif(Dificuldade)).
@@ -46,12 +43,13 @@ destroy2:-
 	rownum(Rown),
 	colnum(Coln),
 	difB(DificuldadeB),
-	difP(DificuldadeP),
+	difW(DificuldadeW),
 	retract(p_color(none)),
 	retract(rownum(Rown)),
 	retract(colnum(Coln)),
 	retract(difB(DificuldadeB)),
-	retract(difP(DificuldadeP)).
+	retract(difW(DificuldadeW)).
+
 
 loop_assign(Board, Color):-
 	asserta(loop_board(Board)),
@@ -71,7 +69,7 @@ game_loop(X, Y, Finished):-
     (
         Finished = no ->
 		rival_color(Color,RivalColor),
-	    print_player(Color),
+		print_player(Color),
 		find_moves(Board, Color, MovesList),
 		member(_, MovesList),!,
 		(
