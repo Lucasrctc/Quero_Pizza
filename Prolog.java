@@ -13,15 +13,36 @@ import javax.swing.JFrame;
 
 public class Prolog
 {
+    private Query q;
     private Query q1;
     private Query q2;
     private Query q3;
     private Query q4;
+    private Query q5;
+    private Query queryscores;
+    int scores[]=new int [2];
+    Variable termino_jogo;
+    String fim="";
+    
+    public String getFim()
+    {
+        return fim;
+    }
+    
+    public int getScoreBlack()
+    {
+        return scores[0];
+    }
+    public int getScoreWhite()
+    {
+        return scores[1];
+    }
+    
     
     public void IniciarOtello()
     {
         String PATH = "C:/Users/Luan Cardoso/Documents/NetBeansProjects/Otello/src/otello/";                   
-        q1 = new Query("consult", new Term[] {new Atom(PATH+"Valor.pl")});
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"valor.pl")});
         System.out.println( "Valor.pl carregado " + (q1.query() ? "succeeded" : "failed"));
         q1 = new Query("consult", new Term[] {new Atom(PATH+"utilities.pl")});
         System.out.println( "Utilities.pl carregado " + (q1.query() ? "succeeded" : "failed"));
@@ -29,7 +50,7 @@ public class Prolog
         System.out.println( "Board.pl carregado " + (q1.query() ? "succeeded" : "failed"));
         q1 = new Query("consult", new Term[] {new Atom(PATH+"game.pl")});
         System.out.println( "Game.pl carregado " + (q1.query() ? "succeeded" : "failed"));
-        q1 = new Query("consult", new Term[] {new Atom(PATH+"Inteligencia.pl")});
+        q1 = new Query("consult", new Term[] {new Atom(PATH+"inteligencia.pl")});
         System.out.println( "Inteligencia.pl carregado " + (q1.query() ? "succeeded" : "failed"));
           
     }
@@ -38,10 +59,14 @@ public class Prolog
     {
         q2= new Query("play",
                 new Term[]{
-                    new Atom ("2")});
+                    new jpl.Integer (3),new Atom("black")});
         
         
         System.out.println( "Dificuldade Configurada " + (q2.query() ? "succeeded" : "failed"));
+        
+        
+       
+        
         
     }
     
@@ -63,33 +88,72 @@ public class Prolog
                 
     }
     
+    public void CountPieces()
+    {
+        Variable Board = new Variable("Board");
+        Variable preta_score= new Variable("X");
+        Variable branca_score= new Variable("Y");
+        queryscores = new Query(new Compound("java_count_pieces", new Term[] {new Atom("black"),preta_score,branca_score })); 
+        
+        if(queryscores.hasMoreElements())
+            System.out.println("Count_pieces ok");
+        
+        Hashtable h;
+        
+        h=queryscores.nextSolution();
+        String str1=h.get("X").toString();
+        String str2=h.get("Y").toString();
+        
+        scores[0]=Integer.parseInt(str1);
+        scores[1]=Integer.parseInt(str2);
+        
+    }
+    
     public String LoopBoard()
     {
         Variable Board = new Variable("Board");
-        q4 = new Query(new Compound("loop_board", new Term[] { Board })); 
-        Hashtable h = new Hashtable(); 
-        String k=""; 
+        Variable preta_score= new Variable("X");
+        Variable branca_score= new Variable("Y");
         
-        while(q4.hasMoreSolutions())
-         {
-                    h = q4.nextSolution(); 
-                    k = h.get("Board").toString(); 
-                 
-          }
+        q4 = new Query(new Compound("loop_board", new Term[] { Board })); 
+       // q5 = new Query(new Compound("count_pieces", new Term[] {new Atom("black"),Board,preta_score,branca_score })); 
+        
+        if(q4.hasMoreElements())
+            System.out.println("Loop_Board ok");
+        
+        /*if(q5.hasMoreElements())
+            System.out.println("Count_pieces ok");*/
+        
+        Hashtable h = new Hashtable(); 
+        
+        //h=q5.nextSolution();
+        /*String str1=h.get("X").toString();
+        String str2=h.get("Y").toString();
+        
+        scores[0]=Integer.parseInt(str1);
+        scores[0]=Integer.parseInt(str2);*/
+        
+        String k=""; 
+        q4.close();
+        
+        
+        
+        h = q4.oneSolution(); 
+        k = h.get("Board").toString(); 
+     
         
         return k;
     }
     
     public void GameLoop(int i, int j)
     {
+        termino_jogo=new Variable("X");
         jpl.Integer a= new jpl.Integer(i);
         jpl.Integer b= new jpl.Integer(j);
         
-        Query q = new Query( "game_loop", new Term[]{a,b});
+        q = new Query(new Compound("game_loop", new Term[]{a,b,termino_jogo}));
         
-        //new Atom(b.toString())
-        
-        System.out.println( "consult Game Loop " + (q.query() ? "succeeded" : "failed"));
+        System.out.print(q.oneSolution());
         
     }
         

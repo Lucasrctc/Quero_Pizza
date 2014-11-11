@@ -16,8 +16,8 @@ public class Tabuleiro
 	private JButton[][] pecas=new JButton[8][8];
 	private JPanel GridPanel;
 	private final JLabel message=new JLabel("Othello está pronto para jogar!");
-        private JLabel BrancaScore;
-        private JLabel PretaScore;
+        private JLabel BrancaScore= new JLabel();
+        private JLabel PretaScore=new JLabel();
 	private static final String COLS="ABCDEFGH";
 	private JFrame janela;
         private JToolBar tools;
@@ -57,10 +57,15 @@ public class Tabuleiro
 		tools.setFloatable(false);
 		gui.add(tools,BorderLayout.PAGE_START);
                 
+                
                 AddButtonNew();
 		AddToolSeparator();
 		AddToolMessage();
+                AddToolSeparator();
+                ConfigurePretaScore();
                 AddToolPretaScore();
+                AddToolSeparator();
+                ConfigureBrancaScore();
                 AddToolBrancaScore();
 		
 		GridPanel=new JPanel(new GridLayout(0,9));
@@ -203,6 +208,22 @@ public class Tabuleiro
             tools.add(new JButton("Novo Jogo"));
         }
         
+        public void ConfigureBrancaScore()
+        {
+            //int i= p.getScoreWhite();
+            //String str=String.valueOf(i);
+            BrancaScore.setText("BRANCA");
+        }
+        
+        public void ConfigurePretaScore()
+        {
+            //int i= p.getScoreBlack();
+            //String str=String.valueOf(i);
+            //PretaScore.setText(str);
+            PretaScore.setText("PRETA");
+            
+        }
+        
         public void AddToolBrancaScore()
         {
             
@@ -253,6 +274,7 @@ public class Tabuleiro
                 
             GridPanel.repaint();
             GridPanel.validate();
+            
         }
         
 }

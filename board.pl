@@ -479,3 +479,7 @@ direction_offsets(OffsetsList) :-
 getRowCol(R,C):-
 	rownum(R),
 	colnum(C).
+
+java_count_pieces(Color, Pieces, RivalPieces):-
+    loop_board(Board),
+    count_pieces(0,0,Color,Board,0,0,Pieces,RivalPieces).

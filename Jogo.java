@@ -52,12 +52,12 @@ public class Jogo
     
     public void JogadorJogar()
     {
-        int i,j;
+        int i=0,j=0;
         
         
         do
         {
-            System.out.println("");
+            System.out.print("");
         }
         while(confirmaJogador==false);
         
@@ -67,6 +67,7 @@ public class Jogo
         p.GameLoop(i, j);
         k=p.LoopBoard();
         k=p.RetiraSimbolos(k);
+        
         p.ConstroiTabuleiro(tb, k);
         
         Jogo.TrocaConfirmaJogador();
@@ -102,6 +103,8 @@ public class Jogo
         
         while(true)
         {
+            
+            
             JogadorJogar();
             InteligenciaJogar();
             
